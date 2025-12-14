@@ -11,6 +11,7 @@
             v-for="post in posts"
             :key="post.id"
             :post="post"
+            @click-post="viewPost"
           />
         </ul>
 
@@ -66,8 +67,7 @@ export default {
     },
     
     addpost() {
-      //placeholder
-      console.log("Add post clicked");
+      this.$router.push('/add-post');
     },
 
     async deleteall() {
@@ -85,6 +85,10 @@ export default {
       console.error(err);
     }
   },
+  viewPost(postId) {
+    // Navigate to /posts/:id
+    this.$router.push(`/posts/${postId}`);
+  }
   }
 };
 </script>
@@ -139,15 +143,17 @@ export default {
 }
 
 button {
-  background: rgb(8, 110, 110);
-  border: none;
+  background: rgb(2, 64, 25);
+  border: 0;
   padding: 10px 20px;
+  margin: 20px 20px 20px 20px;
   color: white;
   border-radius: 20px;
-  cursor: pointer;
+  align-items: center;
+  text-align: center;
 }
 
 button:hover {
-  background-color: rgb(6, 90, 90);
+  background-color: rgba(94, 176, 102, 0.699);
 }
 </style>

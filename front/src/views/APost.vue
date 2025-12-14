@@ -1,5 +1,5 @@
 <template>
-  <div class="A Post">
+  <div class="apost">
     <div id="form">
       <h3>A Post</h3>
       <label for="body">Body: </label>
@@ -41,11 +41,10 @@ export default {
         },
         body: JSON.stringify(this.post),
       })
-        .then((response) => {
-          console.log(response.data);
-          //this.$router.push("/apost/" + this.post.id);
-          // We are using the router instance of this element to navigate to a different URL location
-          this.$router.push("/api/allposts");
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(data);
+          this.$router.push("/");
         })
         .catch((e) => {
           console.log(e);
@@ -60,7 +59,7 @@ export default {
         .then((response) => {
           console.log(response.data);
           // We are using the router instance of this element to navigate to a different URL location
-          this.$router.push("/api/allposts");
+          this.$router.push("/");
         })
         .catch((e) => {
           console.log(e);
@@ -81,17 +80,19 @@ export default {
 #form {
   max-width: 420px;
   margin: 30px auto;
-  background: rgb(167, 154, 154);
+  background: rgb(162, 205, 160);
   text-align: left;
   padding: 40px;
   border-radius: 10px;
 }
+
 h3 {
   text-align: center;
-  color: rgb(8, 110, 110);
+  color: rgb(7, 93, 37);
 }
+
 label {
-  color: rgb(8, 110, 110);
+  color: rgb(4, 71, 41);
   display: inline-block;
   margin: 25px 0 15px;
   font-size: 0.8em;
@@ -99,6 +100,7 @@ label {
   letter-spacing: 1px;
   font-weight: bold;
 }
+
 input {
   display: block;
   padding: 10px 6px;
@@ -106,14 +108,20 @@ input {
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid white;
-  color: blue;
+  color: rgb(4, 69, 32);
 }
+
 button {
-  background: rgb(8, 110, 110);
+  background: rgb(2, 64, 25);
   border: 0;
   padding: 10px 20px;
-  margin-top: 20px;
+  margin: 20px 20px 20px 20px;
   color: white;
   border-radius: 20px;
+  align-items: center;
+  text-align: center;
+}
+button:hover {
+  background-color: rgba(94, 176, 102, 0.699);
 }
 </style>

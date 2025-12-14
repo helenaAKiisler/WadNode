@@ -1,5 +1,5 @@
 <template>
-  <li class="post">
+  <li class="post" @click="goToPost">
     <div class="postHeader">
       <span>{{ formattedDate }}</span>
     </div>
@@ -20,14 +20,23 @@ export default {
   },
   computed: {
     formattedDate() {
-      // Converts created_at timestamp to a readable format
+      // Converts time timestamp to a readable format
       return new Date(this.post.time).toLocaleString();
+    }
+  },
+   methods: {
+    goToPost() {
+      // Emit the post id to the parent
+      this.$emit('click-post', this.post.id);
     }
   }
 };
 </script>
 
 <style scoped>
+.post:hover{
+  background-color: #8fc1e4;
+}
 .feed {
     list-style: none;
     padding-bottom: 1%;
@@ -39,12 +48,15 @@ export default {
     display:flex;
     flex-direction: column;
     border-radius: 15px;
-    background-color: #e48f9f;
+    background: rgb(162, 205, 160);
     padding-top: 2%;
     padding-left: 3%;
     padding-right: 3%;
     padding-bottom: 2%;
     margin-bottom: 5%;
+}
+.post:hover{
+  background: rgb(90, 152, 86);
 }
 .postHeader{
     padding:2%;
