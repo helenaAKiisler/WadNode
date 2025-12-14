@@ -24,7 +24,7 @@ data: function() {
   methods: {
 
 
-LogIn() {
+  LogIn() {
       var data = {
         email: this.email,
         password: this.password
@@ -41,8 +41,8 @@ LogIn() {
       .then((response) => response.json())
       .then((data) => {
       console.log(data);
-      //this.$router.push("/");
-      location.assign("/");
+      this.$router.push("/");
+      //location.assign("/");
       })
       .catch((e) => {
         console.log(e);
