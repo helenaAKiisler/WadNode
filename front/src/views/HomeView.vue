@@ -50,14 +50,27 @@ export default {
       //placeholder
       console.log("Logout clicked");
     },
+    
     addpost() {
       //placeholder
       console.log("Add post clicked");
     },
-    deleteall() {
-      //placeholder
-      console.log("Delete all clicked");
+
+    async deleteall() {
+    try {
+      const res = await fetch('http://localhost:3000/api/posts', {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error('Failed to delete posts');
+
+      // Clear posts from local state so UI updates immediately
+      this.posts = [];
+      console.log('All posts deleted');
+    } catch (err) {
+      console.error(err);
     }
+  },
   }
 };
 </script>

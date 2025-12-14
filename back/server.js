@@ -35,6 +35,17 @@ app.get('/api/posts', async (req, res) => {
     }
 });
 
+//delete all posts
+app.delete('/api/posts', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM posttable'); // delete all rows
+    res.status(200).json({ message: 'All posts deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to delete posts' });
+  }
+});
+
 app.get('/',(req, res) =>{
     res.sendFile('./views/homepage.html', {root: __dirname })
 });
