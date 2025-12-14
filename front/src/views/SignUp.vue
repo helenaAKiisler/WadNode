@@ -15,7 +15,7 @@ name: "SignUp",
 data: function() {
     return {
    email: '',
-   password: '',
+   password: ''
   }
   },
   methods: {
@@ -24,7 +24,7 @@ SignUp() {
         email: this.email,
         password: this.password
       };
-      
+
       fetch("http://localhost:3000/auth/signup", {
         method: "POST",
         headers: {
