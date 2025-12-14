@@ -1,39 +1,41 @@
 <template>
     <header class="header">
-       <nav>
-        <router-link to="/">Home</router-link> 
-        <router-link to="/signup">SignUp</router-link> 
-        <router-link to="/login">LogIn</router-link> 
-        <router-link to="/about">About</router-link>
-    </nav>
+        <nav class="nav">
+            <router-link to="/">Home</router-link>
+            <router-link to="/signup">SignUp</router-link>
+            <router-link to="/login">LogIn</router-link>
+            <router-link to="/about">About</router-link>
+        </nav>
     </header>
 </template>
 
 <script>
-export default{
+export default {
     name: "HeaderCompo"
 
 }
 </script>
 <style>
-*{
+* {
     font-family: 'Courier New', Courier, monospace;
     box-sizing: border-box;
 }
-.nav{
+
+.nav {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: rgb(77, 151, 99);
 }
+
 .nav a {
     padding: 10px 15px;
-    color: darkslategrey;
+
     font-size: large;
     font-weight: bold;
     text-decoration: none;
-    background-color: rgb(67, 116, 84);
+    
 }
+
 .nav a:hover {
     background-color: #dc6379;
     color: #092747;
@@ -50,18 +52,20 @@ export default{
     border-radius: 15px;
     box-shadow: 15%;
 }
-div header{
-    display:flex;
+
+div header {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
-    
-   
-}
-nav a.router-link-exact-active {
-  color: #0a61a8;
-}
-.router-link-active {
-  font-weight: bold;
+
+
 }
 
+nav a.router-link-exact-active {
+    color: #0a61a8;
+}
+
+.router-link-active {
+    font-weight: bold;
+}
 </style>
