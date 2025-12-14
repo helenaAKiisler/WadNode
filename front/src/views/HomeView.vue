@@ -11,6 +11,7 @@
             v-for="post in posts"
             :key="post.id"
             :post="post"
+            @click-post="viewPost"
           />
         </ul>
 
@@ -66,8 +67,7 @@ export default {
     },
     
     addpost() {
-      //placeholder
-      console.log("Add post clicked");
+      this.$router.push('/add-post');
     },
 
     async deleteall() {
@@ -85,6 +85,10 @@ export default {
       console.error(err);
     }
   },
+  viewPost(postId) {
+    // Navigate to /posts/:id
+    this.$router.push(`/posts/${postId}`);
+  }
   }
 };
 </script>
