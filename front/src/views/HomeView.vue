@@ -27,6 +27,7 @@
 
 <script>
 import PostCompo from '@/components/PostCompo.vue';
+import auth from "../auth";
 
 export default {
   name: "HomeView",
@@ -47,8 +48,21 @@ export default {
   },
   methods: {
     logout() {
-      //placeholder
-      console.log("Logout clicked");
+     fetch("http://localhost:3000/auth/logout", {
+          credentials: 'include', //  Don't forget to specify this if you need cookies
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        console.log('jwt removed');
+        console.log('jwt removed:' + auth.authenticated());
+        this.$router.push("/login");
+        location.assign("/");
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("error logout");
+      });
     },
     
     addpost() {

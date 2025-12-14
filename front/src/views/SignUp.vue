@@ -11,7 +11,41 @@
 
 <script>
 export default {
-name: "SignUp"}
+name: "SignUp",
+data: function() {
+    return {
+   email: '',
+   password: '',
+  }
+  },
+  methods: {
+SignUp() {
+      var data = {
+        email: this.email,
+        password: this.password
+      };
+      
+      fetch("http://localhost:3000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+          credentials: 'include', 
+          body: JSON.stringify(data),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+      console.log(data);
+      this.$router.push("/login");
+      //location.assign("/");
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("error");
+      });
+    },
+  }, 
+}
 </script>
 
 <style scoped>
