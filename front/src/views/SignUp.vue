@@ -52,9 +52,9 @@ async SignUp() {
       
     }catch (err) {
       console.log(err.message);
-      this.errorMessage = "Server error. Please try again later.";
-    }}
-  }, 
+    }
+  }
+  }
 }
 </script>
 
