@@ -1,14 +1,18 @@
 const express = require('express');
 const pool = require('./database');
 const cors = require('cors')
+const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
 
-// The express.json() function is a built-in middleware function in Express. 
-// It parses incoming requests with JSON payloads and is based on body-parser.
+//app.use(express.json());  
+app.use(cookieParser());  
+
 app.use(express.json());
 
 
