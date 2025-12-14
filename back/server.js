@@ -84,7 +84,15 @@ app.post('/auth/signup', async(req,res) =>{
     try{
     console.log("a signup request has arrived");
     const  { email, password } = req.body;
-
+    
+    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailFormat.test(email)){
+        return res.json('Invalid email format')
+    }
+    const passwordConstrictions = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if(!passwordConstrictions.test(password)){
+        return res.json('Invalid password')
+    }
     const salt = await bcrypt.genSalt();
     const bcryptPassword = await bcrypt.hash(password, salt) 
     
