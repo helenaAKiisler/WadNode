@@ -27,7 +27,7 @@ app.listen(port, () => {
         console.log("a post request has arrived");
         const post = req.body;
         const newpost = await pool.query(
-            "INSERT INTO posttable(body, time) values ($1, $2)    RETURNING*", [post.body, post.TIMESTAMP]
+            "INSERT INTO posttable(body) values ($1)    RETURNING*", [post.body]
 // $1, $2, $3 are mapped to the first, second and third element of the passed array (post.title, post.body, post.urllink) 
 // The RETURNING keyword in PostgreSQL allows returning a value from the insert or update statement.
 // using "*" after the RETURNING keyword in PostgreSQL, will return everything
@@ -65,7 +65,7 @@ app.put('/api/posts/:id', async(req, res) => {
         const post = req.body;
         console.log("update request has arrived");
         const updatepost = await pool.query(
-            "UPDATE posttable SET (body, time) = ($2, $3) WHERE id = $1", [id, post.body, post.TIMESTAMP]
+            "UPDATE posttable SET (body) = ($2) WHERE id = $1", [id, post.body]
         );
         res.json(updatepost);
     } catch (err) {
