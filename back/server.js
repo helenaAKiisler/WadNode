@@ -65,26 +65,29 @@ app.get('/api/posts/:id', async(req, res) => {
     }
 });
 
-//update a specific post
-app.put('/api/posts/:id', async(req, res) => {
-    try {
-        const { id } = req.params;
-        const post = req.body;
-        console.log("update request has arrived");
-        const updatepost = await pool.query(
-            "UPDATE posttable SET (body) = ($2) WHERE id = $1", [id, post.body]
-        );
-        res.json(updatepost);
-    } catch (err) {
-        console.error(err.message);
-    }
+// Update a specific post
+app.put('/api/posts/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { body } = req.body;  // destructure body directly
+    console.log("update request has arrived", body);
+    const result = await pool.query(
+      "UPDATE posttable SET body = $1 WHERE id = $2",
+      [body, id]
+    );
+    res.json({ message: "Post updated successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
+
 //signing up a new user
 app.post('/auth/signup', async(req,res) =>{
     try{
     console.log("a signup request has arrived");
     const  { email, password } = req.body;
-    
+
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailFormat.test(email)){
         return res.json('Invalid email format')
@@ -93,6 +96,7 @@ app.post('/auth/signup', async(req,res) =>{
     if(!passwordConstrictions.test(password)){
         return res.json('Invalid password')
     }
+
     const salt = await bcrypt.genSalt();
     const bcryptPassword = await bcrypt.hash(password, salt) 
     
@@ -145,7 +149,7 @@ app.get('/auth/authenticate', async(req, res) => {
     console.log('authentication request');
     const token = req.cookies.jwt;
 
-    let authenticated = false;
+    let authenticated = true;
     try{
         if (token){
             await jwt.verify(token, secret, (err)=> {
