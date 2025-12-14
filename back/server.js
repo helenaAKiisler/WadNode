@@ -82,6 +82,18 @@ app.put('/api/posts/:id', async (req, res) => {
   }
 });
 
+// Delete a specific post
+app.delete('/api/posts/:id', async (req, res) => {
+    const { id } = req.params;  // get post ID from URL
+    try {
+        await pool.query('DELETE FROM posttable WHERE id = $1', [id]);
+        res.json({ message: 'Post deleted' }); // send confirmation
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 //signing up a new user
 app.post('/auth/signup', async(req,res) =>{
     try{
