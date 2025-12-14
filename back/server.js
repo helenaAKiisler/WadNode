@@ -10,16 +10,29 @@ const app = express();
 
 app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
 
-//app.use(express.json());  
+app.use(express.json());  
 app.use(cookieParser());  
 
-app.use(express.json());
+//app.use(express.json());
 
 
     //  Handling HTTP requests code will go here  
 
 app.listen(port, () => {
     console.log("Server is listening to port " + port)
+});
+
+//get all posts
+app.get('/api/posts', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM posttable ORDER BY time DESC'
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch posts' });
+    }
 });
 
 app.get('/',(req, res) =>{
