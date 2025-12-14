@@ -8,7 +8,9 @@
     <div class="container">
       <button @click="LogIn"  class="center">LogIn</button>
       <button @click='this.$router.push("/signup")' class="center">Signup</button>
-    </div>
+    </div><p v-if="errorMessage" class="error">
+    {{ errorMessage }}
+  </p>
   </div>
 </template>
 <script>
@@ -19,38 +21,46 @@ data: function() {
     return {
    email: '',
    password: '',
+   errorMessage:''
   }
   },
   methods: {
 
 
-  LogIn() {
+  async LogIn() {
+    try{
       var data = {
         email: this.email,
         password: this.password
       };
+      
       // using Fetch - post method - send an HTTP post request to the specified URI with the defined body
-      fetch("http://localhost:3000/auth/login", {
+      const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
           credentials: 'include', //  Don't forget to specify this if you need cookies
           body: JSON.stringify(data),
-      })
-      .then((response) => response.json())
-      .then((data) => {
+      });
+     const result = await response.json();
+      if(!response.ok){
+        console.log(result.error);
+        this.errorMessage = result.error;
+        return;
+      }
+      
+      this.errorMessage = "";
       console.log(data);
       this.$router.push("/");
       //location.assign("/");
-      })
-      .catch((e) => {
-        console.log(e);
-        console.log("error");
-      });
-    },
+      
+    }catch (err) {
+      console.log(err.message);
+    }
   }, 
-  }
+}
+}
 
 </script>
 

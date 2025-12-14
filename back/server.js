@@ -79,19 +79,27 @@ app.put('/api/posts/:id', async(req, res) => {
         console.error(err.message);
     }
 });
+function validationError(message, status = 400) {
+  const err = new Error(message);
+  err.status = status;
+  err.isValidation = true;
+  return err;
+}
 //signing up a new user
 app.post('/auth/signup', async(req,res) =>{
     try{
     console.log("a signup request has arrived");
     const  { email, password } = req.body;
-    
+    if (!email || !password) {
+      throw validationError("Email and password are required");
+    }
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailFormat.test(email)){
-        return res.json('Invalid email format')
+        throw validationError("Invalid email");
     }
     const passwordConstrictions = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if(!passwordConstrictions.test(password)){
-        return res.json('Invalid password')
+        throw validationError("Invalid password, password has to be at least 8 characters, contain a letter, an uppercase letter, a number and a symbol");
     }
     const salt = await bcrypt.genSalt();
     const bcryptPassword = await bcrypt.hash(password, salt) 
@@ -119,11 +127,16 @@ app.post('/auth/login', async(req, res) => {
     try{
         console.log("a login request has arrived");
         const { email, password } = req.body;
+        if (!email || !password) {
+            throw validationError("Email and password are required");
+        }
         const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-        if (user.rows.length === 0) return res.status(401).json({error: "User is not registered"});
+        if (user.rows.length === 0){
+            throw validationError("User is not registered");
+        }
 
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
-        if(!validPassword) return res.status(401).json({ error:"Password is incorrect" });
+        if(!validPassword) throw validationError("Password is incorrect" );
 
         const token = await generateJWT(user.rows[0].id);
         console.log(token);

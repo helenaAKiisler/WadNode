@@ -6,6 +6,9 @@
     <label for="password">Password</label>
     <input type="password" name="password" required v-model="password">
     <button @click="SignUp" class="SignUp">SignUp</button>
+     <p v-if="errorMessage" class="error">
+    {{ errorMessage }}
+  </p>
   </div>
 </template>
 
@@ -15,35 +18,41 @@ name: "SignUp",
 data: function() {
     return {
    email: '',
-   password: ''
+   password: '',
+   errorMessage:''
   }
   },
   methods: {
-SignUp() {
+async SignUp() {
+  try{
       var data = {
         email: this.email,
         password: this.password
       };
 
-      fetch("http://localhost:3000/auth/signup", {
+      const response = await fetch("http://localhost:3000/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
           credentials: 'include', 
           body: JSON.stringify(data),
-      })
-      .then((response) => response.json())
-      .then((data) => {
+      });
+      const result = await response.json();
+      if(!response.ok){
+        console.log(result.error);
+        this.errorMessage = result.error;
+        return;
+      }
+      
+      this.errorMessage = "";
       console.log(data);
       this.$router.push("/login");
       //location.assign("/");
-      })
-      .catch((e) => {
-        console.log(e);
-        console.log("error");
-      });
-    },
+      
+    }catch (err) {
+      console.log(err.message);
+    }}
   }, 
 }
 </script>
