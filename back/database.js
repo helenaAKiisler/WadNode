@@ -22,7 +22,13 @@ const createTblQuery = `
     CREATE TABLE IF NOT EXISTS "users" (
         id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
         email VARCHAR(200) NOT NULL UNIQUE,
-        password VARCHAR(200) NOT NULL 
+        password VARCHAR(200) NOT NULL ,
+        CHECK (email ~ '^[^@]+@[^@]+\.[^@]+$'),
+        CHECK (length(password) >= 8 AND
+           password ~ '[A-Z]' AND
+           password ~ '[a-z]' AND
+           password ~ '[0-9]' AND
+           password ~ '[^A-Za-z0-9]')
     );`;
 
 const createTblQueryPosts = `

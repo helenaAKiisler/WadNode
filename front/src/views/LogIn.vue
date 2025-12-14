@@ -2,29 +2,29 @@
   <div class="form">
     <h3>LogIn</h3>
     <label for="email">Email</label>
-    <input type="email" name="email"  required v-model="email">
+    <input type="email" name="email" required v-model="email">
     <label for="password">Password</label>
     <input type="password" name="password" required v-model="password">
     <div class="container">
-      <button @click="LogIn"  class="center">LogIn</button>
+      <button @click="LogIn" class="center">LogIn</button>
       <button @click='this.$router.push("/signup")' class="center">Signup</button>
     </div>
   </div>
 </template>
 <script>
 export default {
-name: "LogIn", 
+  name: "LogIn",
 
-data: function() {
+  data: function () {
     return {
-   email: '',
-   password: '',
-  }
+      email: '',
+      password: '',
+    }
   },
   methods: {
 
 
-  LogIn() {
+    LogIn() {
       var data = {
         email: this.email,
         password: this.password
@@ -35,22 +35,22 @@ data: function() {
         headers: {
           "Content-Type": "application/json",
         },
-          credentials: 'include', //  Don't forget to specify this if you need cookies
-          body: JSON.stringify(data),
+        credentials: 'include', //  Don't forget to specify this if you need cookies
+        body: JSON.stringify(data),
       })
-      .then((response) => response.json())
-      .then((data) => {
-      console.log(data);
-      this.$router.push("/");
-      //location.assign("/");
-      })
-      .catch((e) => {
-        console.log(e);
-        console.log("error");
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          this.$router.push("/");
+          //location.assign("/");
+        })
+        .catch((e) => {
+          console.log(e);
+          console.log("error");
+        });
     },
-  }, 
-  }
+  },
+}
 
 </script>
 
@@ -63,10 +63,12 @@ data: function() {
   padding: 40px;
   border-radius: 10px;
 }
+
 h3 {
   text-align: center;
   color: rgb(7, 93, 37);
 }
+
 label {
   color: rgb(4, 71, 41);
   display: inline-block;
@@ -76,6 +78,7 @@ label {
   letter-spacing: 1px;
   font-weight: bold;
 }
+
 input {
   display: block;
   padding: 10px 6px;
@@ -85,6 +88,7 @@ input {
   border-bottom: 1px solid white;
   color: rgb(4, 69, 32);
 }
+
 button {
   background: rgb(2, 64, 25);
   border: 0;
@@ -95,13 +99,19 @@ button {
   align-items: center;
   text-align: center;
 }
+
+button:hover {
+  background-color: rgba(94, 176, 102, 0.699);
+}
+
 .center {
   margin: auto;
   border: 0;
   padding: 10px 20px;
   margin-top: 20px;
-  width: 30%; 
+  width: 30%;
 }
+
 .container {
   display: flex;
   justify-content: center;
