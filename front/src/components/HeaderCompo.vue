@@ -4,7 +4,7 @@
             <router-link to="/">Home</router-link>
             <router-link to="/signup">SignUp</router-link>
             <router-link to="/login">LogIn</router-link>
-            <router-link to="/about">About</router-link>
+            <router-link to="/contactus">Contact Us</router-link>
         </nav>
     </header>
 </template>
@@ -37,7 +37,7 @@ export default {
 }
 
 .nav a:hover {
-    background-color: #dc6379;
+    background-color: rgb(104, 177, 115);
     color: #092747;
 }
 

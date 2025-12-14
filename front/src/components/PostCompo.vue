@@ -39,12 +39,15 @@ export default {
     display:flex;
     flex-direction: column;
     border-radius: 15px;
-    background-color: #e48f9f;
+    background: rgb(162, 205, 160);
     padding-top: 2%;
     padding-left: 3%;
     padding-right: 3%;
     padding-bottom: 2%;
     margin-bottom: 5%;
+}
+.post:hover{
+  background: rgb(90, 152, 86);
 }
 .postHeader{
     padding:2%;

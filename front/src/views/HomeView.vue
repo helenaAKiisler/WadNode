@@ -139,15 +139,17 @@ export default {
 }
 
 button {
-  background: rgb(8, 110, 110);
-  border: none;
+  background: rgb(2, 64, 25);
+  border: 0;
   padding: 10px 20px;
+  margin: 20px 20px 20px 20px;
   color: white;
   border-radius: 20px;
-  cursor: pointer;
+  align-items: center;
+  text-align: center;
 }
 
 button:hover {
-  background-color: rgb(6, 90, 90);
+  background-color: rgba(94, 176, 102, 0.699);
 }
 </style>
