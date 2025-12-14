@@ -78,15 +78,9 @@ app.put('/api/posts/:id', async (req, res) => {
     res.json({ message: "Post updated successfully" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
-function validationError(message, status = 400) {
-  const err = new Error(message);
-  err.status = status;
-  err.isValidation = true;
-  return err;
-}
 
 //signing up a new user
 app.post('/auth/signup', async(req,res) =>{
@@ -94,15 +88,15 @@ app.post('/auth/signup', async(req,res) =>{
     console.log("a signup request has arrived");
     const  { email, password } = req.body;
 if (!email || !password) {
-      throw validationError("Email and password are required");
+    return res.status(400).json({ error: "Email and password are required" });
     }
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailFormat.test(email)){
-        throw validationError("Invalid email");
+        return res.status(400).json({ error: "Invalid email" });
     }
     const passwordConstrictions = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if(!passwordConstrictions.test(password)){
-        throw validationError("Invalid password, password has to be at least 8 characters, contain a letter, an uppercase letter, a number and a symbol");
+        return res.status(400).json({ error: "Invalid password, password has to be at least 8 characters, contain a letter, an uppercase letter, a number and a symbol" });
     }
 
     const salt = await bcrypt.genSalt();
@@ -118,8 +112,7 @@ if (!email || !password) {
     res
     .status(201)
     .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
-    .json({user_id: authUser.rows[0].id})
-    .send;
+    .json({user_id: authUser.rows[0].id});
 } catch (err){
     console.error(err.message);
     res.status(400).send(err.message);
@@ -132,27 +125,29 @@ app.post('/auth/login', async(req, res) => {
         console.log("a login request has arrived");
         const { email, password } = req.body;
         if (!email || !password) {
-            throw validationError("Email and password are required");
+            return res.status(400).json({ error: "Email and password are required" });
+            
         }
         const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
         if (user.rows.length === 0){
-            throw validationError("User is not registered");
+            return res.status(400).json({ error: "User is not registered" });
+            
         }
 
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
-        if(!validPassword) throw validationError("Password is incorrect" );
+        if(!validPassword) return res.status(400).json({ error: "Password is incorrect" });
 
         const token = await generateJWT(user.rows[0].id);
         console.log(token);
-        res.cookie("isAuthorized", true, { maxAge: 1000 * 60, httpOnly: true });
-        res.cookie('jwt', token, { maxAge: 6000000, httpOnly: true });
+        
+        
         res 
             .status(201)
             .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
-            .json({ user_id: user.rows[0].id })
-            .send;
+            .cookie("isAuthorized", true, { maxAge: 1000 * 60, httpOnly: true })
+            .json({ user_id: user.rows[0].id });
     } catch (err) {
-        res.status(401).json({ error: err.message });
+        return res.status(401).json({ error: err.message });
     }
 
 });
@@ -162,7 +157,7 @@ app.get('/auth/authenticate', async(req, res) => {
     console.log('authentication request');
     const token = req.cookies.jwt;
 
-    let authenticated = true;
+    let authenticated = false;
     try{
         if (token){
             await jwt.verify(token, secret, (err)=> {
